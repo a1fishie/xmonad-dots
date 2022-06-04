@@ -1,0 +1,37 @@
+Config { font = "xft:Arimo Nerd Font:pixelsize:6:antialias=true:hinting=true"
+       , additionalFonts = [ "xft:FontAwesome-Regular:pixelsize:8" ]
+       , bgColor = "#12162a"
+       , fgColor = "#CD4759"
+	   , alpha = 0
+       , lowerOnStart = True
+       , allDesktops = True
+       , position = Top
+       , persistent = True
+       , commands = [
+		-- time + date + clock and calendar icon
+		Run Date "<fn=1></fn> %H:%M  <fn=1></fn> %e/%f" "date" 50
+		-- kernel
+       	, Run Com "uname" ["-n"] "" 0
+		-- penguin icon
+		, Run Com "echo" ["<fn=1></fn> "] "desktop" 3600
+		-- kb icon
+		, Run Com "echo" ["<fn=1></fn> "] "keyboard" 3600
+		-- keyboard format: layout "<fc=HEXCOLOR>text</fc>"
+		, Run Kbd [ ("pl", "<fc=#C0Caf5>pl</fc>")
+			, ("us", "<fc=#C0Caf5>us</fc>") ]
+		-- spotify icon
+		, Run Com "echo" ["<fn=1></fn>"] "spotify" 3600
+		-- spotify media player
+		, Run Mpris2 "spotify" ["-t", "<artist> <fn=1></fn> <title>"] 10
+		-- battery add %battery% in template
+        , Run BatteryP ["BAT0"] ["-t", "<acstatus><watts> (<left>%)"] 360
+		-- cpu used
+		, Run Cpu ["-t", " <fn=1></fn>: <total>%","-H","50","--high","red"] 20
+		-- workspaces n shi
+		, Run UnsafeStdinReader
+
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+, template = "%UnsafeStdinReader% }{  <fc=#f3e5f5>%date%</fc> <fc=#F58277>%cpu%</fc> <fc=#58E88B>%spotify% %mpris2%</fc>  <fc=#C0Caf5>%keyboard%%kbd%</fc>  <fc=#51AFEF>%desktop%%uname%</fc> "
+}
