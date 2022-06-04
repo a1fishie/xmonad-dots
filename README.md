@@ -114,7 +114,7 @@ You'd be right except wrong quantum.
 9. Congratulations. You just wasted 45-75 minutes looking at bad qt5 themes.
 </details>
 <details><summary> Kvantum is done. Now what???? </summary>
-# time for LXAppearance and QT5CT.
+time for LXAppearance and QT5CT.
 
 1. Download said programs (if you use the KDE suite you might wanna get qt5ct-kde cuz better integration)
 2. Set themes in LXAppearance, Icon Theme, and Mouse Cursor Theme.
