@@ -5,6 +5,7 @@ import XMonad
 import System.IO (hPutStrLn)
 import Data.Monoid
 import System.Exit
+import XMonad.Operations
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 
@@ -51,7 +52,7 @@ myTerminal      = "kitty"
 myFileManager   = "dolphin"
 myBrowser       = "firefox-developer-edition"
 myTedit         = "neovide"
-myLauncher      = "dmenu_run -l 15"
+myLauncher      = "dmenu_run"
 
 -- focus follows mouse
 myFocusFollowsMouse :: Bool
@@ -66,8 +67,8 @@ myModMask       = mod4Mask -- windows key, change to mod1Mask for alt (i will hu
 -- changing to alt also breaks some configs below
 
 -- b o r d e r s
-focusBordCol  = "#88d8e3"
-normBordCol = "#879BE3"
+focusBordCol  = "#89dced"
+normBordCol = "#898b4fa"
 
 -- startup hook (autostart type thing)
 myStartupHook :: X ()
@@ -88,7 +89,7 @@ xmobarEscape = concatMap doubltLts
 
 myWorkspaces :: [String]
 myWorkspaces = clickable . map xmobarEscape
-               $ [" I "," II "," III "," IV "," V "," VI "," VII "," VIII "," IX "]
+               $ ["I","II","III","IV","V","VI","VII","VIII","IX"]
 
   where
         clickable l = [ "<action=xdotool key super+" ++ show n ++ ">" ++ ws ++ "</action>" |
@@ -109,8 +110,8 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                where
                  h = 0.5
                  w = 0.5
-                 t = 0.5 -h
-                 l = 0.5 -w
+                 t = 0.75 -h
+                 l = 0.75 -w
 
 -- spacing between window
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
@@ -118,11 +119,11 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
 
 
-myTabTheme = def { fontName            = "xft:FontAwesome-Regular"
-                 , activeColor         = "#88d8e3"
-                 , inactiveColor       = "#879BE3"
-                 , activeBorderColor   = "#88d8e3"
-                 , inactiveBorderColor = "#879BE3"
+myTabTheme = def { fontName            = "xft:Meslo LG S"
+                 , activeColor         = "#89dceb"
+                 , inactiveColor       = "#89b4fa"
+                 , activeBorderColor   = "#89dceb"
+                 , inactiveBorderColor = "#89b4fa"
                  , activeTextColor     = "#ffffff"
                  , inactiveTextColor   = "#000000"
                  }
@@ -158,7 +159,6 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $  mkToggle (NBFULL ?? 
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
     [ className =? "mpv"            --> doShift (myWorkspaces !! 0)
-    , className =? "neovide"        --> doShift (myWorkspaces !! 0)
     , className =? "Navigator"      --> doShift (myWorkspaces !! 1)
     , className =? "firefoxdeveloperedition" --> doShift (myWorkspaces !! 1)
     , className =? "discord"        --> doShift (myWorkspaces !! 2)
@@ -263,13 +263,13 @@ main = do
         startupHook        = myStartupHook,
         logHook            = workspaceHistoryHook <+> myLogHook <+> dynamicLogWithPP xmobarPP
         { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
-        , ppCurrent = xmobarColor "#f7768e" "" . wrap ("<box type=Bottom width=2 mb=2 color=#f7768e>") "</box>"
-        , ppVisible = xmobarColor "#f7768e" ""
-        , ppHidden = xmobarColor "#c0caf5" "" . wrap ("<box type=Top width=2 mt=2 color=#c0caf5>") "</box>"
-        , ppHiddenNoWindows = xmobarColor "#c0caf5" ""
-        , ppTitle = xmobarColor "#f5f5f5" "" . shorten 60
+        , ppCurrent = xmobarColor "#89b4fa" "" . wrap ("<box type=Bottom width=2 mb=2 color=#89b4fa>") "</box>"
+        , ppVisible = xmobarColor "#89b4fa" ""
+        , ppHidden = xmobarColor "#cdd6f4" "" . wrap ("<box type=Bottom width=2 mt=2 color=#cdd6f4>") "</box>"
+        , ppHiddenNoWindows = xmobarColor "#cdd6f4" ""
+        , ppTitle = xmobarColor "#cdd6f4" "" . shorten 25
         , ppSep = "<fc=#12162a> <fn=1></fn> </fc>"
-        , ppUrgent = xmobarColor "#ea1a25" "" .wrap "!" "!"
+        , ppUrgent = xmobarColor "#d20f39" "" .wrap "!" "!"
         , ppExtras = [windowCount]
         , ppOrder = \(ws:l:t:ex) -> [ws,l]++ex++[t]
         }

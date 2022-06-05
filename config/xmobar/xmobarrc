@@ -1,8 +1,8 @@
-Config { font = "xft:Arimo Nerd Font:pixelsize:6:antialias=true:hinting=true"
+Config { font = "xft:Meslo LG S:pixelsize:6:antialias=true:hinting=true"
        , additionalFonts = [ "xft:FontAwesome-Regular:pixelsize:8" ]
-       , bgColor = "#12162a"
-       , fgColor = "#CD4759"
-	   , alpha = 0
+       , bgColor = "#1e1e2e"
+       , fgColor = "#cba6f7"
+	   , alpha = 185
        , lowerOnStart = True
        , allDesktops = True
        , position = Top
@@ -17,14 +17,12 @@ Config { font = "xft:Arimo Nerd Font:pixelsize:6:antialias=true:hinting=true"
 		-- kb icon
 		, Run Com "echo" ["<fn=1></fn> "] "keyboard" 3600
 		-- keyboard format: layout "<fc=HEXCOLOR>text</fc>"
-		, Run Kbd [ ("pl", "<fc=#C0Caf5>pl</fc>")
-			, ("us", "<fc=#C0Caf5>us</fc>") ]
+		, Run Kbd [ ("pl", "<fc=#b4befe>pl</fc>")
+			, ("us", "<fc=#b4befe>us</fc>") ]
 		-- spotify icon
 		, Run Com "echo" ["<fn=1></fn>"] "spotify" 3600
 		-- spotify media player
-		, Run Mpris2 "spotify" ["-t", "<artist> <fn=1></fn> <title>"] 10
-		-- battery add %battery% in template
-        , Run BatteryP ["BAT0"] ["-t", "<acstatus><watts> (<left>%)"] 360
+		, Run Mpris2 "spotify" ["-t", "<artist> <fn=1></fn> <title>"] 10
 		-- cpu used
 		, Run Cpu ["-t", " <fn=1></fn>: <total>%","-H","50","--high","red"] 20
 		-- workspaces n shi
@@ -33,5 +31,5 @@ Config { font = "xft:Arimo Nerd Font:pixelsize:6:antialias=true:hinting=true"
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-, template = "%UnsafeStdinReader% }{  <fc=#f3e5f5>%date%</fc> <fc=#F58277>%cpu%</fc> <fc=#58E88B>%spotify% %mpris2%</fc>  <fc=#C0Caf5>%keyboard%%kbd%</fc>  <fc=#51AFEF>%desktop%%uname%</fc> "
+, template = "%UnsafeStdinReader% }<fc=#a6adc8>%date%</fc>{ <fc=#a6e3a1>%spotify% %mpris2%</fc><fc=#fab387>%cpu%</fc>   <fc=#b4befe>%keyboard%%kbd%</fc>  <fc=#89b4fa>%desktop%%uname%</fc> "
 }
