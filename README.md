@@ -1,6 +1,6 @@
 # xmonad-dots
 
-todo: screenshots, rewriting half the star wars saga into the config (three quarters!!!)
+todo: screenshots, rewriting half the star wars saga into the config (nearly done)
 
 ### include:
 
@@ -50,9 +50,11 @@ you can also click the workspaces to move (except NSP for the reason above)
 | Ctrl+Alt+J/K/H/L            | Dec/Inrease WINDOW spacing  (J/K) Dec/Increase SCREEN spacing (H/L)|
 | PrintScrn                   | maim Screenshot (saved to clipboard)                               |
 | Meta+N                      | c o l o r p i c k e r!!! (hex)                                     |
+| Alt+Space                   | script to change layout (configurable in the xmonad folder)        |
 | Ctrl+Shift+Q                | Kills currently focused window                                     |
 | Meta+B                      | Refreshes current desktop??                                        |
 | Meta+Tab                    | Changes Layout (default threeCol and tall, add more in xmonad.hs)  |
+| Meta+F                      | Toggle fullscreen layout (useful for fullscreen videos and games)  |
 | Meta+J/K                    | Change window focus (vim-esque)                                    |
 | Meta+M                      | Focus master window                                                |
 | Meta+Backspace              | Promotes window to become master                                   |
@@ -62,14 +64,14 @@ you can also click the workspaces to move (except NSP for the reason above)
 | Mod+[1-9]                   | Change workspace                                                   |
 | Mod+Shift+[1-9]             | Move focused window to workspace                                   |
 | Mod+Shift+Up/Down           | Increase master window number (becomes apparent in tall layout)    |
-| Mod+MLeftClick              | Move window, places into floating                                   |
+| Mod+MLeftClick              | Move window, places into floating                                  |
 | Mod+MRightClick             | Resize window in floating                                          |
 
 </details>
 
 # Dependencies
 <details><summary>wonder what could go here</summary>
-<pre> xmonad xmobar lxsession xorg-xrandr xorg-xprop python-pywal picom maim xcolor nerd-fonts-fira-code awesome-terminal-fonts nerd-fonts-arimo </pre>
+<pre> xmonad xmobar lxsession xorg-xrandr xorg-xprop python-pywal picom maim xcolor nerd-fonts-fira-code awesome-terminal-fonts ttf-meslo </pre>
 </details>
 
 
@@ -103,7 +105,7 @@ I prefer LXAppearance and Qt5ct, with Kvantum of course.
 ### Kvantum? You mean Quantum??? I thought that was physics???
 You'd be right except wrong quantum.
 
-1. Install Kvantum (community repo on Arch)
+1. Install `Kvantum` (community repo on Arch)
 2. Download QT5 theme from either KDE store or the AUR.
 3. Have an absolute breakdown because you can't find a good one
 4. Realize you dont need to do anything if you got it from the AUR
@@ -114,9 +116,9 @@ You'd be right except wrong quantum.
 9. Congratulations. You just wasted 45-75 minutes looking at bad qt5 themes.
 </details>
 <details><summary> Kvantum is done. Now what???? </summary>
-time for LXAppearance and QT5CT.
+time for `LXAppearance` and `QT5CT`.
 
-1. Download said programs (if you use the KDE suite you might wanna get qt5ct-kde cuz better integration)
+1. Download said programs (if you use the KDE suite you might wanna get `qt5ct-kde` cuz better integration)
 2. Set themes in LXAppearance, Icon Theme, and Mouse Cursor Theme.
 3. Forget to hit apply and close LXAppearance
 4. Realize you wasted another 45 minutes choosing icon themes.
