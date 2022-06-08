@@ -1,5 +1,4 @@
 -- IMPORTS --
-
 -- main
 import XMonad
 import System.IO (hPutStrLn)
@@ -21,6 +20,7 @@ import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.InsertPosition
 
 -- Utils
 import XMonad.Util.SpawnOnce
@@ -56,12 +56,11 @@ myLauncher      = "dmenu_run"
 
 -- focus follows mouse
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
-
+myFocusFollowsMouse = False
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
-myBorderWidth   = 2
+myBorderWidth   = 3
 
 myModMask       = mod4Mask -- windows key, change to mod1Mask for alt (i will hunt you)
 -- changing to alt also breaks some configs below
@@ -110,8 +109,8 @@ myScratchPads = [ NS "terminal" spawnTerm findTerm manageTerm
                where
                  h = 0.5
                  w = 0.5
-                 t = 0.75 -h
-                 l = 0.75 -w
+                 t = 0.25
+                 l = 0.25
 
 -- spacing between window
 mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spacing l a
@@ -148,8 +147,8 @@ spirals  = renamed [Replace "spirals"]
            $ mySpacing 8
            $ spiral (6/7)
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $  mkToggle (NBFULL ?? NOBORDERS ?? EOT) myLayout
-             where myLayout = spirals
-                         |||  threeCol
+             where myLayout = threeCol
+                         |||  spirals
                          |||  tall
 ------------------------------------------------------------------------
 -- window rules:
@@ -158,26 +157,29 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $  mkToggle (NBFULL ?? 
 --
 myManageHook :: XMonad.Query (Data.Monoid.Endo WindowSet)
 myManageHook = composeAll
-    [ className =? "mpv"            --> doShift (myWorkspaces !! 0)
-    , className =? "Navigator"      --> doShift (myWorkspaces !! 1)
+    [ className =? "mpv"             --> doShift (myWorkspaces !! 0)
+    , className =? "Navigator"       --> doShift (myWorkspaces !! 1)
     , className =? "firefoxdeveloperedition" --> doShift (myWorkspaces !! 1)
-    , className =? "discord"        --> doShift (myWorkspaces !! 2)
-    , className =? "Gimp"           --> doShift (myWorkspaces !! 3)
-    , className =? "spotify"        --> doShift (myWorkspaces !! 4)
-    , className =? "Lxappearance"   --> doCenterFloat
-    , className =? "qt5ct"          --> doCenterFloat
-    , className =? "dolphin"        --> doCenterFloat
-    , className =? "Font-manager"   --> doCenterFloat
-    , className =? "MPlayer"        --> doFloat
-    , className =? "Lutris"         --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
+    , className =? "discord"         --> doShift (myWorkspaces !! 2)
+    , className =? "Gimp"            --> doShift (myWorkspaces !! 3)
+    , className =? "lutris"          --> doShift (myWorkspaces !! 3)
+    , className =? "riotclientux.exe"--> doShift (myWorkspaces !! 3)
+    , className =? "spotify"         --> doShift (myWorkspaces !! 4)
+    , className =? "deluge"          --> doCenterFloat
+    , className =? "Lxappearance"    --> doCenterFloat
+    , className =? "qt5ct"           --> doCenterFloat
+    , className =? "Kvantum Manager" --> doCenterFloat
+    , className =? "dolphin"         --> doCenterFloat
+    , className =? "Font-manager"    --> doCenterFloat
+    , className =? "MPlayer"         --> doFloat
+    , className =? "Lutris"          --> doFloat
+    , resource  =? "desktop_window"  --> doIgnore
     ] <+> namedScratchpadManageHook myScratchPads
 
 ------------------------------------------------------------------------
 -- event handling
 
 myEventHook = mempty
-
 ------------------------------------------------------------------------
 -- status bars and logging
 
@@ -195,6 +197,7 @@ myKeys = [
  ,("M-S-r",      spawn "xmonad --restart")
  ,("C-M-M1-l",   spawn "~/.xmonad/lock.sh")
  ,("C-M-M1-q",   spawn "systemctl poweroff")
+ ,("C-M-M1-r",   spawn "systemctl reboot")
 
   -- applications - terminal in a scratchpad, dmenu, text editor, browser, fileman
  ,("M-<Return>", namedScratchpadAction myScratchPads "terminal")
@@ -202,6 +205,11 @@ myKeys = [
  ,("M-s",        spawn "dmenu_run -l 15")
  ,("M-c",        spawn (myTedit))
  ,("M-S-c",      spawn (myBrowser))
+
+ -- media
+ ,("<Page-Up>", spawn "playerctl next")
+ ,("<Page-Down>", spawn "playerctl previous")
+ ,("<Page-Down>", spawn "playerctl previous")
 
   -- g a p s x o x o
  ,("C-M1-j",     decWindowSpacing 4)
@@ -220,7 +228,8 @@ myKeys = [
 
   -- focus windows n stuff
  ,("M-<Tab>",   sendMessage NextLayout)
- ,("M-f",       sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts)
+ ,("M-f",       sendMessage (MT.Toggle NBFULL))
+ ,("M-C-f",     sendMessage (MT.Toggle NBFULL) >> sendMessage ToggleStruts)
  ,("M-<Backspace>", promote)
  ,("M-j",       windows W.focusDown)
  ,("M-k",       windows W.focusUp)
@@ -258,7 +267,7 @@ main = do
         normalBorderColor  = normBordCol,
         focusedBorderColor = focusBordCol,
         layoutHook         = myLayoutHook,
-        manageHook         = myManageHook <+> manageDocks,
+        manageHook         = insertPosition End Older <+> myManageHook <+> manageDocks,
         handleEventHook    = myEventHook,
         startupHook        = myStartupHook,
         logHook            = workspaceHistoryHook <+> myLogHook <+> dynamicLogWithPP xmobarPP
