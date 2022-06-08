@@ -2,14 +2,14 @@ Config { font = "xft:Meslo LG S:pixelsize:6:antialias=true:hinting=true"
        , additionalFonts = [ "xft:FontAwesome-Regular:pixelsize:8" ]
        , bgColor = "#1e1e2e"
        , fgColor = "#cba6f7"
-	   , alpha = 185
+	   , alpha = 255
        , lowerOnStart = True
        , allDesktops = True
        , position = Top
        , persistent = True
        , commands = [
 		-- time + date + clock and calendar icon
-		Run Date "<fn=1></fn> %H:%M  <fn=1></fn> %e/%f" "date" 50
+		Run Date "<fn=1></fn> %H:%M  <fn=1></fn> %e %b" "date" 50
 		-- kernel
        	, Run Com "uname" ["-n"] "" 0
 		-- penguin icon
