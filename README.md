@@ -38,19 +38,20 @@ you can also click the workspaces to move (except NSP for the reason above)
 
 | Keybind                     | Function                                                           |
 | :-------------------------- | ------------------------------------------------------------------ |
+| Ctrl+Meta+Alt+R             | Reboot.                                                            |
 | Ctrl+Meta+Alt+Q             | Quit.                                                              |
 | Meta+Alt+Q                  | Quit XMonad                                                        |
 | Meta+Alt+R                  | Recompile XMonad                                                   |
 | Meta+Shift+R                | Restart XMonad                                                     |
 | Meta+Enter                  | Open terminal in a scratchpad: toggleable window  (kitty)          |
-| Meta+S                      | Open Launcher (dmenu - yet to config properly)                     |
+| Meta+S                      | Open Launcher (dmenu - yet to config properly)                      |
 | Meta+C                      | Open text editor of choice (default neovide)                       |
 | Meta+Shift+C                | Open your browser of choice (change variable near top)             |
-| Meta+E                      | Open file manager of choice (dolphin by default, questionable ik)  |
+| Meta+E                      | Open file manager of choice (dolphin by default, questionable ik)   |
 | Ctrl+Alt+J/K/H/L            | Dec/Inrease WINDOW spacing  (J/K) Dec/Increase SCREEN spacing (H/L)|
 | PrintScrn                   | maim Screenshot (saved to clipboard)                               |
 | Meta+N                      | c o l o r p i c k e r!!! (hex)                                     |
-| Alt+Space                   | script to change layout (configurable in the xmonad folder)        |
+| Alt+Space                   | script to change layout (configurable in the xmonad folder)         |
 | Ctrl+Shift+Q                | Kills currently focused window                                     |
 | Meta+B                      | Refreshes current desktop??                                        |
 | Meta+Tab                    | Changes Layout (default threeCol and tall, add more in xmonad.hs)  |
