@@ -244,7 +244,6 @@ myKeys = [
  ,("M-t",       withFocused $ windows . W.sink)
 
  ,("M-.",       nextScreen)
- ,("M-,",       prevScreen)
 
  ,("M-S-<Up>",   sendMessage (IncMasterN 1))
  ,("M-S-<Down>", sendMessage (IncMasterN (-1)))
