@@ -18,6 +18,7 @@ import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.DynamicProperty
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.InsertPosition
@@ -30,6 +31,7 @@ import XMonad.Util.NamedScratchpad as NS
 
 -- Layouts + mods
 import XMonad.Layout.ThreeColumns
+import XMonad.Layout.GridVariants (Grid(Grid))
 import XMonad.Layout.Spiral
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Simplest
@@ -60,7 +62,7 @@ myFocusFollowsMouse = False
 myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
-myBorderWidth   = 3
+myBorderWidth   = 2
 
 myModMask       = mod4Mask -- windows key, change to mod1Mask for alt (i will hunt you)
 -- changing to alt also breaks some configs below
@@ -117,12 +119,11 @@ mySpacing :: Integer -> l a -> XMonad.Layout.LayoutModifier.ModifiedLayout Spaci
 mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
 
-
 myTabTheme = def { fontName            = "xft:Meslo LG S"
                  , activeColor         = "#89dceb"
-                 , inactiveColor       = "#89b4fa"
+                 , inactiveColor       = "#f9e2af"
                  , activeBorderColor   = "#89dceb"
-                 , inactiveBorderColor = "#89b4fa"
+                 , inactiveBorderColor = "#f9e2af"
                  , activeTextColor     = "#ffffff"
                  , inactiveTextColor   = "#000000"
                  }
@@ -132,6 +133,7 @@ myTabTheme = def { fontName            = "xft:Meslo LG S"
 -- customize options (found in docs) and add to myLayoutHook
 
 threeCol = renamed [Replace "threeCol"]
+           $ windowNavigation
            $ limitWindows 7
            $ mySpacing 8
            $ ThreeCol 1 (3/100) (1/2)
@@ -146,8 +148,18 @@ spirals  = renamed [Replace "spirals"]
            $ subLayout [] (smartBorders Simplest)
            $ mySpacing 8
            $ spiral (6/7)
+grid     = renamed [Replace "grid"]
+           $ smartBorders
+           $ windowNavigation
+           $ addTabs shrinkText myTabTheme
+           $ subLayout [] (smartBorders Simplest)
+           $ limitWindows 12
+           $ mySpacing 8
+           $ mkToggle (single MIRROR)
+           $ Grid (16/10)
 myLayoutHook = avoidStruts $ mouseResize $ windowArrange $  mkToggle (NBFULL ?? NOBORDERS ?? EOT) myLayout
              where myLayout = threeCol
+                         |||  grid
                          |||  spirals
                          |||  tall
 ------------------------------------------------------------------------
@@ -164,7 +176,7 @@ myManageHook = composeAll
     , className =? "Gimp"            --> doShift (myWorkspaces !! 3)
     , className =? "lutris"          --> doShift (myWorkspaces !! 3)
     , className =? "riotclientux.exe"--> doShift (myWorkspaces !! 3)
-    , className =? "spotify"         --> doShift (myWorkspaces !! 4)
+    , className =? "leagueclientux.exe" --> doShift (myWorkspaces !! 3)
     , className =? "deluge"          --> doCenterFloat
     , className =? "Lxappearance"    --> doCenterFloat
     , className =? "qt5ct"           --> doCenterFloat
@@ -179,7 +191,7 @@ myManageHook = composeAll
 ------------------------------------------------------------------------
 -- event handling
 
-myEventHook = mempty
+myEventHook = dynamicPropertyChange "WM_NAME" (title =? "Spotify" --> doShift (myWorkspaces !! 4))
 ------------------------------------------------------------------------
 -- status bars and logging
 
@@ -199,17 +211,12 @@ myKeys = [
  ,("C-M-M1-q",   spawn "systemctl poweroff")
  ,("C-M-M1-r",   spawn "systemctl reboot")
 
-  -- applications - terminal in a scratchpad, dmenu, text editor, browser, fileman
+ -- applications - terminal in a scratchpad, dmenu, text editor, browser, fileman
  ,("M-<Return>", namedScratchpadAction myScratchPads "terminal")
  ,("M-e",        spawn (myFileManager))
  ,("M-s",        spawn "dmenu_run -l 15")
  ,("M-c",        spawn (myTedit))
  ,("M-S-c",      spawn (myBrowser))
-
- -- media
- ,("<Page-Up>", spawn "playerctl next")
- ,("<Page-Down>", spawn "playerctl previous")
- ,("<Page-Down>", spawn "playerctl previous")
 
   -- g a p s x o x o
  ,("C-M1-j",     decWindowSpacing 4)
@@ -244,6 +251,7 @@ myKeys = [
  ,("M-t",       withFocused $ windows . W.sink)
 
  ,("M-.",       nextScreen)
+ ,("M-,",       prevScreen)
 
  ,("M-S-<Up>",   sendMessage (IncMasterN 1))
  ,("M-S-<Down>", sendMessage (IncMasterN (-1)))
@@ -267,12 +275,12 @@ main = do
         focusedBorderColor = focusBordCol,
         layoutHook         = myLayoutHook,
         manageHook         = insertPosition End Older <+> myManageHook <+> manageDocks,
-        handleEventHook    = myEventHook,
+        handleEventHook    = myEventHook ,
         startupHook        = myStartupHook,
         logHook            = workspaceHistoryHook <+> myLogHook <+> dynamicLogWithPP xmobarPP
         { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
-        , ppCurrent = xmobarColor "#89b4fa" "" . wrap ("<box type=Bottom width=2 mb=2 color=#89b4fa>") "</box>"
-        , ppVisible = xmobarColor "#89b4fa" ""
+        , ppCurrent = xmobarColor "#f9e4a3" "" . wrap ("<box type=Bottom width=2 mb=2 color=#f9e4a3>") "</box>"
+        , ppVisible = xmobarColor "#f9e4a3" ""
         , ppHidden = xmobarColor "#cdd6f4" "" . wrap ("<box type=Bottom width=2 mt=2 color=#cdd6f4>") "</box>"
         , ppHiddenNoWindows = xmobarColor "#cdd6f4" ""
         , ppTitle = xmobarColor "#cdd6f4" "" . shorten 25
