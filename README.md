@@ -86,18 +86,6 @@ Simple, you or I forgot a font, which one I do not know. - will update soon enou
 2. Change variable to `False`
 3. Recompile + Restart Xmonad (crashing Xorg also works)
 
-<details><summary>It says it can't compile cuz somethingsomething spotify</summary>
-
-You are really living in the 16th century if you are without spotify.
-anyway,
-1. Open xmonad.hs using your favorite text editor (neovim!!)
-2. Go to line 259 (259gg in neovim/vim)
-3. Remove/append `spawnOnce "spotify"` with either a dd (remove line) or by replacing `spotify` with your media player
-4. recompile
-
-If xmobar also cries, change `"spotify"` in `xmobarrc`, line 25 and recompile
-</details>
-
 <details><summary> why app look bad wah wah wah</summary>
 
 Basically, theres like 25 different theming platforms that you *can* use.
