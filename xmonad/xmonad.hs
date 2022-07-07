@@ -158,13 +158,13 @@ myScratchPads = [mixer, terminal]
   where
     terminal = NS "terminal" spawn find manage
       where
-        spawn = myTerminal ++ " -t scratchpad"
-        find = title =? "terminal"
+        spawn = myTerminal ++ " -T kitty"
+        find = title =? "kitty"
         manage = customFloating $ rectCentered 0.4
     mixer = NS "mixer" spawn find manage
       where
-        spawn = myTerminal ++ " -t pulsepixer -e pulsemixer"
-        find = title =? "pulsemixer"
+        spawn = myTerminal ++ " -T PulseMixer -e pulsemixer"
+        find = title =? "PulseMixer"
         manage = customFloating $ rectCentered 0.6
 
 openScratchPad :: String -> X ()
