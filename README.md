@@ -75,6 +75,8 @@ you can also click the workspaces to move (except NSP for the reason above)
 <pre> xmonad xmobar lxsession xorg-xrandr xorg-xprop python-pywal picom maim xcolor nerd-fonts-fira-code awesome-terminal-fonts ttf-meslo </pre>
 </details>
 
+Optional: (for scratchpads)
+<pre> pulsemixer spotfy-tui btop </pre>
 
 # Khajit has fixes if you have coin, alternatively: troubleshooting
 
