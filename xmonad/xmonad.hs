@@ -153,20 +153,30 @@ windowCount :: X (Maybe String)
 windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace . W.current . windowset
 
 -- ScratchPads - basically floating temporary instances
-myScratchPads :: [NamedScratchpad]
-myScratchPads = [mixer, terminal]
+myScratchpads :: [NamedScratchpad]
+myScratchpads = [kitty, mixer, btop, spotifytui]
   where
-    terminal = NS "terminal" spawn find manage
+    kitty = NS "kitty" spawn find manage
       where
-        spawn = myTerminal ++ " -T kitty"
-        find = title =? "kitty"
-        manage = customFloating $ rectCentered 0.4
+        spawn  = myTerminal ++ " -T kitty"
+        find   = title =? "kitty"
+        manage = customFloating $ rectCentered 0.45
     mixer = NS "mixer" spawn find manage
       where
-        spawn = myTerminal ++ " -T PulseMixer -e pulsemixer"
-        find = title =? "PulseMixer"
-        manage = customFloating $ rectCentered 0.6
-
+        spawn  = myTerminal ++ " -T PulseMixer -e pulsemixer"
+        find   = title =? "PulseMixer"
+        manage = customFloating $ rectCentered 0.5
+    btop = NS "btop" spawn find manage
+      where
+        spawn  = myTerminal ++ " -T btop -e btop"
+        find   = title =? "btop"
+        manage = customFloating $ rectCentered 0.55
+    spotifytui = NS "spotifytui" spawn find manage
+      where
+        spawn  = myTerminal ++ " -T spotify-tui -e spt"
+        find   = title =? "spotify-tui"
+        manage = customFloating $ rectCentered 0.55
+	
 openScratchPad :: String -> X ()
 openScratchPad = namedScratchpadAction myScratchPads
 
