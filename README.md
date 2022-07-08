@@ -47,7 +47,7 @@ you can also click the workspaces to move (except NSP for the reason above)
 | Meta+M                      | Open PulseMixer in a scratchpad                                    |
 | Meta+B                      | Open Btop in a scratchpad                                          | 
 | Meta+S                      | Open Spotify-tui in a scratchpad                                   |
-| Meta+S                      | Open Launcher (dmenu by default)                                   |
+| Meta+R                      | Open Launcher (dmenu by default)                                   |
 | Meta+C                      | Open text editor of choice (default neovide)                       |
 | Meta+Shift+C                | Open your browser of choice (change variable near top)             |
 | Meta+E                      | Open file manager of choice (dolphin by default, questionable ik)  |
@@ -64,10 +64,11 @@ you can also click the workspaces to move (except NSP for the reason above)
 | Meta+Backspace              | Promotes window to become master                                   |
 | Meta+Shift+J/K              | Move window left/right                                             |
 | Meta+Alt+H/L                | Shrink/grow focused window                                         |
-| Meta+T                      | Push window into tiling ("sink")                                   |
+| Meta+T                      | Toggle tiled (rectCentered)                                        |
+| Meta+Shift+T                | Toggle tiled (vertRectCentered)                                    |
 | Mod+[1-9]                   | Change workspace                                                   |
 | Mod+Shift+[1-9]             | Move focused window to workspace                                   |
-| Mod+Shift+Up/Down           | Increase master window number (becomes apparent in tall layout)    |
+| Mod+Shift+[/]               | Inc/Decrease master window number (becomes apparent in tall layout)|
 | Mod+MLeftClick              | Move window, places into floating                                  |
 | Mod+MRightClick             | Resize window in floating                                          |
 
@@ -78,8 +79,9 @@ you can also click the workspaces to move (except NSP for the reason above)
 <pre> xmonad xmobar lxsession xorg-xrandr xorg-xprop python-pywal picom maim xcolor nerd-fonts-fira-code awesome-terminal-fonts ttf-meslo </pre>
 </details>
 
-Optional: (for scratchpads)
+<details><summary>Optional: (for scratchpads)</summary>
 <pre> pulsemixer spotfy-tui btop </pre>
+</details>
 
 # Khajit has fixes if you have coin, alternatively: troubleshooting
 
