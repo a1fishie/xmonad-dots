@@ -9,7 +9,7 @@ todo: screenshots, rewriting half the star wars saga into the config (nearly don
 - bloat
 - random colors that came out of my vomit
 - a semi-functioning xmobar (doesnt work)
-- c l i c k y workspaces
+- c l i c k y workspaces (no longer work)
 - a beautiful wallpaper
 - wait i forgot to upload the wallpaper
 - pop out terminal!! (scratchpads ftw, NSP = fake desktop)
