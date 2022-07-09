@@ -19,11 +19,12 @@ import XMonad.ManageHook
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.DynamicProperty
-import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.WorkspaceHistory
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 
 -- Utils
 import XMonad.Util.SpawnOnce
@@ -45,6 +46,7 @@ import XMonad.Layout.WindowArranger
 import XMonad.Layout.WindowNavigation
 import qualified XMonad.Layout.MultiToggle as MT (Toggle(..))
 
+------------------------------------------------------------------------
 -- self explanatory
 myTerminal      = "kitty"
 myFileManager   = "dolphin"
@@ -68,6 +70,7 @@ normBordCol   = "#898b4fa"
 myKeys =
   powerKeys
     ++ launchKeys
+    ++ scratchPadKeys
     ++ miscKeys
     ++ layoutKeys
     ++ wmKeys
@@ -82,14 +85,18 @@ myKeys =
       ]
 
     launchKeys =
-      [  ("M-S-<Return>", spawn (myTerminal))
-        ,("M-<Return>", openScratchPad "terminal")
-        ,("M-m",        openScratchPad "mixer")
-        ,("M-e",        spawn (myFileManager))
+      [  ("M-e",        spawn (myFileManager))
         ,("M-s",        spawn "dmenu_run -l 15")
         ,("M-c",        spawn (myTedit))
         ,("M-S-c",      spawn (myBrowser))
         ,("M-M1-c",     spawn "emacsclient -c -a 'emacs'")
+      ]
+
+    scratchPadKeys =
+      [ ("M-<Return>", openScratchPad "kitty")
+       ,("M-m",        openScratchPad "mixer")
+       ,("M-b",        openScratchPad "btop")
+       ,("M-S-s",        openScratchPad "spotifytui")
       ]
 
     miscKeys =
@@ -122,12 +129,11 @@ myKeys =
         ,("M-M1-l",    sendMessage Expand)
       ]
 
-removedKeys :: [String]
-removedKeys = ["M-h", "M-l", "M-."]
+myRemovedKeys :: [String]
+myRemovedKeys = ["M-.", "M-S-q"]
 
 myKeysConfig :: XConfig a -> XConfig a
-myKeysConfig config = config `additionalKeysP` myKeys `removeKeysP` removedKeys
-
+myKeysConfig config = config `additionalKeysP` myKeys `removeKeysP` myRemovedKeys
 ------------------------------------------------------------------------
 
 -- startup hook (autostart type thing)
@@ -136,7 +142,7 @@ myStartupHook = do
         traverse spawnOnce
           [ "xrandr --output DisplayPort-0 --auto --output DisplayPort-1 --right-of DisplayPort-0"
           , "xsetroot -cursor_name left_ptr"
-	  , "/usr/bin/emacs --daemon"
+          , "/usr/bin/emacs --daemon"
           , "picom"
           , "lxsession"
           , "wal -R"
@@ -144,9 +150,10 @@ myStartupHook = do
           ]
 	setWMName "LG3D"
 
--- workspace names + window count + clickyyy
+-- workspace names + window count
 
 myWorkspaces = ["I","II","III","IV","V","VI","VII", "VIII", "IX"]
+
 ignoredWorkspaces = ["NSP"]
 
 windowCount :: X (Maybe String)
@@ -176,9 +183,9 @@ myScratchpads = [kitty, mixer, btop, spotifytui]
         spawn  = myTerminal ++ " -T spotify-tui -e spt"
         find   = title =? "spotify-tui"
         manage = customFloating $ rectCentered 0.55
-	
+
 openScratchPad :: String -> X ()
-openScratchPad = namedScratchpadAction myScratchPads
+openScratchPad = namedScratchpadAction myScratchpads
 
 rectCentered :: Rational -> W.RationalRect
 rectCentered percentage = W.RationalRect offset offset percentage percentage
@@ -195,7 +202,7 @@ vertRectCentered height = W.RationalRect offsetX offsetY width height
 
 -- Layouts
 
-defaultTall = Tall 1 0.05 0.6
+defaultTall = Tall 1 0.05 0.55
 
 tall = renamed [Replace "Default"] $ limitWindows 6 $ defaultSpacing defaultTall
 
@@ -225,6 +232,7 @@ myManageHook = composeAll
     , className =? "Navigator"       --> doShift (myWorkspaces !! 1)
     , className =? "firefoxdeveloperedition" --> doShift (myWorkspaces !! 1)
     , className =? "discord"         --> doShift (myWorkspaces !! 2)
+    , className =? "steam"           --> doShift (myWorkspaces !! 2)
     , className =? "Gimp"            --> doShift (myWorkspaces !! 3)
     , className =? "lutris"          --> doShift (myWorkspaces !! 3)
     , className =? "riotclientux.exe"--> doShift (myWorkspaces !! 3)
@@ -239,9 +247,9 @@ myManageHook = composeAll
     , className =? "MPlayer"         --> doFloat
     , className =? "Lutris"          --> doFloat
     , resource  =? "desktop_window"  --> doIgnore
-    ,insertPosition End Older
+    , insertPosition End Older
     , manageDocks
-    , namedScratchpadManageHook myScratchPads
+    , namedScratchpadManageHook myScratchpads
     ]
 
 ------------------------------------------------------------------------
@@ -253,14 +261,36 @@ myEventHook = dynamicPropertyChange "WM_NAME" (title =? "Spotify" --> doShift (m
 
 myLogHook :: X ()
 myLogHook = fadeInactiveLogHook fadeAmount
-    where fadeAmount = 0.85
+  where fadeAmount = 0.9
 
 -- main function
 main :: IO ()
-main = do
-    xmproc0 <- spawnPipe "xmobar -x 1 ~/.config/xmobar/xmobarrc"
-    xmproc1 <- spawnPipe "xmobar -x 2 ~/.config/xmobar/xmobarrc"
-    xmonad $ docks def {
+main = xmonad . withSB (statusBar <> statusBar2) . docks . myKeysConfig $ defaultSettings
+
+statusBar :: StatusBarConfig
+statusBar = statusBarProp "xmobar ~/.config/xmobar/xmobarrc" $ pure pp
+
+statusBar2 :: StatusBarConfig
+statusBar2 = statusBarProp "xmobar -x 1 ~/.config/xmobar/xmobarrc" $ pure pp
+
+pp =
+      filterOutWsPP
+        ignoredWorkspaces
+        xmobarPP
+          { ppCurrent = xmobarColor "#f9e4a3" "" . wrap ("<box type=Bottom width=3 mb=2 color=#f9e4a3>") "</box>"
+          , ppVisible = xmobarColor "#f9e4a3" ""
+          , ppHidden = xmobarColor "#cdd6f4" "" . wrap ("<box type=Bottom width=3 mt=2 color=#cdd6f4>") "</box>"
+          , ppHiddenNoWindows = xmobarColor "#cdd6f4" ""
+          , ppTitle = xmobarColor "#cdd6f4" "" . shorten 40
+          , ppSep = "<fc=#12162a> <fn=1></fn> </fc>"
+          , ppUrgent = xmobarColor "#d20f39" "" .wrap "!" "!"
+          , ppExtras = [windowCount]
+          , ppOrder = \(ws:l:t:ex) -> [ws]++ex++[t]
+          }
+
+defaultSettings =
+  def
+    {
         terminal           = myTerminal,
         modMask            = myModMask,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -270,20 +300,9 @@ main = do
         normalBorderColor  = normBordCol,
         focusedBorderColor = focusBordCol,
         layoutHook         = myLayout,
-        manageHook         = myManageHook,
+        manageHook         = myManageHook ,
         handleEventHook    = myEventHook ,
         startupHook        = myStartupHook,
-        logHook            = myLogHook <+> dynamicLogWithPP  xmobarPP
-        { ppOutput = \x -> hPutStrLn xmproc0 x >> hPutStrLn xmproc1 x
-        , ppCurrent = xmobarColor "#f9e4a3" "" . wrap ("<box type=Bottom width=2 mb=2 color=#f9e4a3>") "</box>"
-        , ppVisible = xmobarColor "#f9e4a3" ""
-        , ppHidden = xmobarColor "#cdd6f4" "" . wrap ("<box type=Bottom width=2 mt=2 color=#cdd6f4>") "</box>"
-        , ppHiddenNoWindows = xmobarColor "#cdd6f4" ""
-        , ppTitle = xmobarColor "#cdd6f4" "" . shorten 25
-        , ppSep = "<fc=#12162a> <fn=1></fn> </fc>"
-        , ppUrgent = xmobarColor "#d20f39" "" .wrap "!" "!"
-        , ppExtras = [windowCount]
-        , ppOrder = \(ws:l:t:ex) -> [ws]++ex++[t]
-        }
-           } `additionalKeysP` myKeys
+        logHook            = myLogHook <+> dynamicLogWithPP xmobarPP
+    }
 ------------------------------------------------------------------------
