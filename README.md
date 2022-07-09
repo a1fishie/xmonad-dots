@@ -46,8 +46,8 @@ you can also click the workspaces to move (except NSP for the reason above)
 | Meta+Enter                  | Open terminal in a scratchpad: toggleable window  (kitty)          |
 | Meta+M                      | Open PulseMixer in a scratchpad                                    |
 | Meta+B                      | Open Btop in a scratchpad                                          | 
-| Meta+S                      | Open Spotify-tui in a scratchpad                                   |
-| Meta+R                      | Open Launcher (dmenu by default)                                   |
+| Meta+Shift+S                | Open Spotify-tui in a scratchpad                                   |
+| Meta+S                      | Open Launcher (dmenu by default)                                   |
 | Meta+C                      | Open text editor of choice (default neovide)                       |
 | Meta+Shift+C                | Open your browser of choice (change variable near top)             |
 | Meta+E                      | Open file manager of choice (dolphin by default, questionable ik)  |
