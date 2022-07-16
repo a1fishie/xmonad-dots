@@ -76,7 +76,7 @@ you can also click the workspaces to move (except NSP for the reason above)
 
 # Dependencies
 <details><summary>wonder what could go here</summary>
-<pre> xmonad xmobar lxsession xorg-xrandr xorg-xprop python-pywal picom maim xcolor nerd-fonts-fira-code awesome-terminal-fonts ttf-meslo </pre>
+<pre> xmonad-git xmonad-contrib-git xmobar lxsession xorg-xrandr xorg-xprop python-pywal picom maim xcolor nerd-fonts-fira-code awesome-terminal-fonts ttf-meslo </pre>
 </details>
 
 <details><summary>Optional: (for scratchpads)</summary>
