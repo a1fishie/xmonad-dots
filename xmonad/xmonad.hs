@@ -96,7 +96,7 @@ myKeys =
       [ ("M-<Return>", openScratchPad "kitty")
        ,("M-m",        openScratchPad "mixer")
        ,("M-b",        openScratchPad "btop")
-       ,("M-S-s",        openScratchPad "spotifytui")
+       ,("M-x",        openScratchPad "spotifytui")
       ]
 
     miscKeys =
@@ -146,7 +146,6 @@ myStartupHook = do
           , "picom"
           , "lxsession"
           , "wal -R"
-          , "spotify"
           ]
 	setWMName "LG3D"
 
@@ -165,8 +164,8 @@ myScratchpads = [kitty, mixer, btop, spotifytui]
   where
     kitty = NS "kitty" spawn find manage
       where
-        spawn  = myTerminal ++ " -T kitty"
-        find   = title =? "kitty"
+        spawn  = myTerminal ++ " -T term"
+        find   = title =? "term"
         manage = customFloating $ rectCentered 0.45
     mixer = NS "mixer" spawn find manage
       where
@@ -247,10 +246,13 @@ myManageHook = composeAll
     , className =? "MPlayer"         --> doFloat
     , className =? "Lutris"          --> doFloat
     , resource  =? "desktop_window"  --> doIgnore
+    , title     =? "Wine System Tray" --> doHide
     , insertPosition End Older
     , manageDocks
     , namedScratchpadManageHook myScratchpads
     ]
+    where
+      doHide = ask >>= doF . W.delete :: ManageHook
 
 ------------------------------------------------------------------------
 -- event handling
